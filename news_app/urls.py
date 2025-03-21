@@ -8,5 +8,5 @@ urlpatterns = [
     path('details/<slug:news>/', news_details, name='details'),
     path('contact/', ContactViews.as_view(), name='contact'),
     path('404/', get_404, name='404'),
-    path('news/category/<str:category_name>/', CategoryNewsListView.as_view(), name='category_news_list'),
+    path('category/<str:category_name>/', CategoryNewsListView.as_view(), name='category'),
 ]

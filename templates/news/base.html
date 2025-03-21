@@ -56,7 +56,7 @@
         <ul class="nav navbar-nav main_nav">
           <li class="active"><a href="{% url 'homepage' %}"><span class="fa fa-home desktop-home"></span><span class="mobile-show">Home</span></a></li>
           {% for categ in categories %}
-          <li><a href="#">{{ categ.name }}</a></li>
+          <li><a href="{% url 'category' category_name=categ.name %}">{{ categ.name }}</a></li>
           {% endfor %}
           <li><a href="{% url 'contact' %}">Biz bilan bog'lanish</a></li>
           <li><a href="{% url '404' %}">404 Page</a></li>
@@ -91,14 +91,10 @@
   </section>
 
 
+  {% block content %}
+  {% endblock content %}
 
-
-    {% block content %}
-    {% endblock content %}
-
-
-
-  <footer id="footer">
+    <footer id="footer">
     <div class="footer_top">
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4">
@@ -139,7 +135,7 @@ Sirlar ochiladi, haqiqat soyalardan chiqadi. 🌑🔍</p>
     </div>
     <div class="footer_bottom">
       <p class="copyright">Copyright &copy; 2025 <a href="index.html">NewsFeed</a></p>
-      <p class="developer">Developed By Humoyiddin</p>
+      <p style='color:white' class="developer">Developed By Humoyiddin</p>
     </div>
   </footer>
 </div>

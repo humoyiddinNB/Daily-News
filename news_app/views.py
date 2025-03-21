@@ -16,6 +16,8 @@ def news_list(request):
 
 def news_details(request, news):
     news = get_object_or_404(News, slug=news)
+    news.views += 1
+    news.save()
     context = {
         'news' : news
     }
@@ -31,6 +33,7 @@ class HomePageView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = self.model1.objects.all()
+        context['newses'] = self.model.objects.all().order_by('-publish_time')
         context['news_list'] = News.objects.filter(status=News.Status.PUBLISHED).order_by('-publish_time')
         context['local_news'] = News.objects.all().filter(category__name='Mahalliy').order_by('-publish_time')[:5]
         context['global'] = News.objects.all().filter(category__name='Xorij').order_by('-publish_time')[:5]
@@ -40,7 +43,6 @@ class HomePageView(ListView):
 
 
 class ContactViews(View):
-
     def get(self, request):
         form = ContactForm()
         return render(request, 'news/contact.html', {'form' : form})
@@ -49,7 +51,7 @@ class ContactViews(View):
         form = ContactForm(request.POST)
         if request.method == 'POST' and form.is_valid():
             form.save()
-            return redirect('homepagFriday, December 05, 2045e')
+            return redirect('contact')
 
         return render(request, 'news/contact.html', {'form' : form})
 
@@ -65,6 +67,6 @@ def get_404(request):
 class CategoryNewsListView(View):
     def get(self, request, category_name):
         news = News.objects.all().filter(category__name=category_name)
-        return render(request, 'local.html', {'news' : news})
+        return render(request, 'news/category.html', {'category_news' : news})
 
 

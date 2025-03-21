@@ -9,3 +9,7 @@ def latest_news(request):
         'categories' : categories
     }
     return context
+
+def popular_posts(request):
+    popular_posts = News.objects.all().order_by("-views")[:4]
+    return {"popular_posts" : popular_posts}
