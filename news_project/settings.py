@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news_app'
+    'news_app',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +65,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'news_app.context_processor.latest_news',
-                'news_app.context_processor.popular_posts'
+                'news_app.context_processor.popular_posts',
+                'users.context_processor.news_list'
             ],
         },
     },

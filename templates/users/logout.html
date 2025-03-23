@@ -1,0 +1,10 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+  <h2>Chiqishni tasdiqlaysizmi?</h2>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" name="confirm" value="yes">Ha</button>
+    <a href="{% url 'profile' %}"><button>Yoq</button></a>
+  </form>
+{% endblock %}

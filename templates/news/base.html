@@ -29,9 +29,20 @@
         <div class="header_top">
           <div class="header_top_left">
             <ul class="top_nav">
+              {% if user.is_authenticated %}
               <li><a href="{% url 'homepage' %}">Bosh sahifa</a></li>
               <li><a href="#">Biz haqimizda</a></li>
               <li><a href="{% url 'contact' %}">Bog'lanish</a></li>
+              <li><a href="{% url 'profile' %}">Profil</a></li>
+              <li><a href="{% url 'update' %}">Profilni yangilash</a></li>
+              <li><a href="{% url 'logout' %}">Profildan chiqish</a></li>
+              {% else %}
+              <li><a href="{% url 'homepage' %}">Bosh sahifa</a></li>
+              <li><a href="#">Biz haqimizda</a></li>
+              <li><a href="{% url 'contact' %}">Bog'lanish</a></li>
+              <li><a href="{% url 'register' %}">Ro'yxatdan o'tish</a></li>
+              <li><a href="{% url 'login' %}">Kirish</a></li>
+              {% endif %}
             </ul>
           </div>
           <div class="header_top_right">
@@ -70,19 +81,20 @@
         <div class="latest_newsarea"> <span>So'ngi yangiliklar</span>
           <ul id="ticker01" class="news_sticker">
           {% for news in latest_news %}
-            <li><a href="#"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
+            <li><a href="{% url 'details' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
           {% endfor %}
           </ul>
           <div class="social_area">
             <ul class="social_nav">
-              <li class="facebook"><a href="#"></a></li>
-              <li class="twitter"><a href="#"></a></li>
-              <li class="flickr"><a href="#"></a></li>
-              <li class="pinterest"><a href="#"></a></li>
-              <li class="googleplus"><a href="#"></a></li>
-              <li class="vimeo"><a href="#"></a></li>
-              <li class="youtube"><a href="#"></a></li>
-              <li class="mail"><a href="#"></a></li>
+              <li class="facebook"><a href="https://www.facebook.com" target="_blank"></a></li>
+              <li class="twitter"><a href="https://www.twitter.com" target="_blank"></a></li>
+              <li class="flickr"><a href="https://www.flickr.com" target="_blank"></a></li>
+              <li class="pinterest"><a href="https://www.pinterest.com" target="_blank"></a></li>
+              <li class="googleplus"><a href="https://plus.google.com" target="_blank"></a></li>
+              <li class="vimeo"><a href="https://www.vimeo.com" target="_blank"></a></li>
+              <li class="youtube"><a href="https://www.youtube.com" target="_blank"></a></li>
+              <li class="mail"><a href="mailto:your-email@example.com"></a></li>
+
             </ul>
           </div>
         </div>
@@ -107,7 +119,7 @@
             <h2>Bo'limlar</h2>
             <ul class="tag_nav">
               {% for category in categories %}
-              <li><a href="#">{{ category.name }}</a></li>
+              <li><a href="{% url 'category' category.name %}">{{ category.name }}</a></li>
               {% endfor %}
             </ul>
           </div>
@@ -140,6 +152,7 @@ Sirlar ochiladi, haqiqat soyalardan chiqadi. 🌑🔍</p>
   </footer>
 </div>
 {% block javascript %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static '/js/jquery.min.js' %}"></script>
 <script src="{% static '/js/wow.min.js' %}"></script>
 <script src="{% static '/js/bootstrap.min.js' %}"></script>

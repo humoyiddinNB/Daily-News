@@ -164,28 +164,15 @@
       <div class="col-lg-4 col-md-4 col-sm-4">
         <aside class="right_content">
           <div class="single_sidebar">
-            <h2><span>Ommabop habarlar</span></h2>
+            <h2><span>Ommabop Habarlar</span></h2>
             <ul class="spost_nav">
+              {% for news in popular_posts %}
               <li>
-                <div class="media wow fadeInDown"> <a href="pages/single_page.html" class="media-left"> <img alt="" src="{% static 'images/post_img1.jpg'%}"> </a>
-                  <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
+                <div class="media wow fadeInDown"> <a href="{% url 'details' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                  <div class="media-body"> <a href="{% url 'details' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="pages/single_page.html" class="media-left"> <img alt="" src="{% static 'images/post_img2.jpg'%}"> </a>
-                  <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                </div>
-              </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="pages/single_page.html" class="media-left"> <img alt="" src="{% static 'images/post_img1.jpg'%}"> </a>
-                  <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                </div>
-              </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="pages/single_page.html" class="media-left"> <img alt="" src="{% static 'images/post_img2.jpg'%}"> </a>
-                  <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                </div>
-              </li>
+               {% endfor %}
             </ul>
           </div>
           <div class="single_sidebar">
@@ -234,16 +221,13 @@
             </div>
           </div>
           <div class="single_sidebar wow fadeInDown">
-            <h2><span>Sponsor</span></h2>
-            <a class="sideAdd" href="#"><img src="{% static 'images/add_img.jpg'%}" alt=""></a> </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Barcha turkumlar</span></h2>
-            <select class="catgArchive">
-              <option>Turkumlarni tanlang</option>
-              {% for category in categories %}
-              <option>{{ category.name }}</option>
-              {% endfor %}
-            </select>
+              <h2><span>Barcha turkumlar</span></h2>
+              <select class="catgArchive" onchange="if (this.value) window.location.href=this.value;">
+                  <option value="">Turkumlarni tanlang</option>
+                  {% for category in categories %}
+                      <option value="{% url 'category' category.name %}">{{ category.name }}</option>
+                  {% endfor %}
+              </select>
           </div>
           <div class="single_sidebar wow fadeInDown">
             <h2><span>Links</span></h2>

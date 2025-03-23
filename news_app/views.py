@@ -1,9 +1,18 @@
+import datetime
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from users.forms import CommentCreateForm, CommentUpdateForm
+from users.models import Comment
 from .forms import ContactForm
 from .models import News, Category
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.generic import ListView
+
+
+def get_date():
+    return datetime.datetime.today()
 
 
 def news_list(request):
@@ -14,12 +23,27 @@ def news_list(request):
 
     return render(request, 'news/news_list.html', contex)
 
-def news_details(request, news):
-    news = get_object_or_404(News, slug=news)
+def news_details(request, slug):
+    news = get_object_or_404(News, slug=slug)
+    newses = News.objects.all().filter(category__name=news.category)[1:4]
+    categories = Category.objects.all()
+    comments = Comment.objects.filter(post__slug=news.slug)[:5]
+    form = CommentCreateForm(request.POST)
+    if form.is_valid() and request.POST:
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.post = news
+        comment.save()
+        return redirect('details', slug=news.slug)
+
     news.views += 1
     news.save()
     context = {
-        'news' : news
+        'news' : news,
+        'newses' : newses,
+        'categories' : categories,
+        'comments' : comments,
+        'form' : form
     }
     return render(request, 'news/single_page.html', context)
 
@@ -70,3 +94,32 @@ class CategoryNewsListView(View):
         return render(request, 'news/category.html', {'category_news' : news})
 
 
+
+
+@method_decorator(login_required, name='dispatch')
+class CommentUpdateView(View):
+    def post(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        if request.user == comment.user:
+            comment.content = request.POST.get("content")
+            comment.save()
+            return JsonResponse({"success": True, "content": comment.content})
+        return JsonResponse({"success": False}, status=403)
+
+@method_decorator(login_required, name='dispatch')
+class CommentDeleteView(View):
+    def post(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        if request.user == comment.user:
+            comment.delete()
+            return JsonResponse({"success": True})
+        return JsonResponse({"success": False}, status=403)
+
+@login_required
+def add_comment(request, slug):
+    if request.method == "POST":
+        news = get_object_or_404(News, slug=slug)
+        content = request.POST.get("content")
+        comment = Comment.objects.create(user=request.user, news=news, content=content)
+        return JsonResponse({"success": True, "comment_id": comment.id})
+    return JsonResponse({"success": False}, status=400)

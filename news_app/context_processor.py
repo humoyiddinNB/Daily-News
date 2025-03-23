@@ -1,4 +1,6 @@
 from .models import News, Category
+from django.shortcuts import get_object_or_404
+
 
 
 def latest_news(request):
@@ -13,3 +15,4 @@ def latest_news(request):
 def popular_posts(request):
     popular_posts = News.objects.all().order_by("-views")[:4]
     return {"popular_posts" : popular_posts}
+

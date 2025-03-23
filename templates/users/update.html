@@ -1,0 +1,81 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %} Profilni yangilash {% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <!-- Left Content (Update Form) -->
+            <div class="col-sm-8">
+                <section id="updateSection" style="margin: 40px 0;">
+                    <div class="panel panel-default" style="border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <div class="panel-heading" style="background: #34495e; color: white; text-align: center; padding: 15px; border-radius: 5px 5px 0 0;">
+                            <h3 style="margin: 0; font-family: 'Arial', sans-serif;">Profilni yangilash</h3>
+                        </div>
+                        <div class="panel-body" style="padding: 30px;">
+
+                            <form method="post" action="{% url 'update' %}">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary" style="width: 100%; background: #2980b9; border: none; padding: 10px; font-size: 16px;">Saqlash</button>
+                            </form>
+
+
+                            <p style="text-align: center; margin-top: 15px;">
+                                <a href="{% url 'homepage' %}" style="color: #2980b9; text-decoration: none;">Bosh sahifaga qaytish</a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Content (Latest News, Popular Posts, etc.) -->
+            <div class="col-sm-4">
+                <aside class="right_content" style="margin: 40px 0;">
+                    <!-- Latest News -->
+                    <div class="latest_post">
+                        <h2><span>So'ngi yangiliklar</span></h2>
+                        <div class="latest_post_container">
+                            <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
+                            <ul class="latest_postnav">
+                                {% for news in news_list|slice:"4:9" %}
+                                <li>
+                                    <div class="media">
+                                        <a href="{% url 'details' news.slug %}" class="media-left">
+                                            <img alt="" src="{{ news.image.url }}">
+                                        </a>
+                                        <div class="media-body">
+                                            <a href="{% url 'details' news.slug %}" class="catg_title">{{ news.title }}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div id="next-button"><i class="fa fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Posts -->
+                    <div class="single_sidebar">
+                        <h2><span>Ommabop Habarlar</span></h2>
+                        <ul class="spost_nav">
+                            {% for news in popular_posts %}
+                            <li>
+                                <div class="media wow fadeInDown">
+                                    <a href="{% url 'details' news.slug %}" class="media-left">
+                                        <img alt="" src="{{ news.image.url }}">
+                                    </a>
+                                    <div class="media-body">
+                                        <a href="{% url 'details' news.slug %}" class="catg_title">{{ news.title }}</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
