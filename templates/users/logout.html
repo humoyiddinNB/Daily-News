@@ -1,10 +1,28 @@
 {% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %} Chiqishni Tasdiqlash {% endblock title %}
 
 {% block content %}
-  <h2>Chiqishni tasdiqlaysizmi?</h2>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit" name="confirm" value="yes">Ha</button>
-    <a href="{% url 'profile' %}"><button>Yoq</button></a>
-  </form>
-{% endblock %}
+<section id="contentSection">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-12">
+                <div class="card shadow-sm wow fadeInDown" style="border: 2px solid #ddd; border-radius: 10px;">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2 class="mb-0">Chiqishni Tasdiqlaysizmi?</h2>
+                    </div>
+                    <div class="card-body text-center p-4">
+                        <p class="lead">Haqiqatan ham profilingizdan chiqmoqchimisiz?</p>
+                        <form method="post" class="mt-4">
+                            {% csrf_token %}
+                            <button type="submit" name="confirm" value="yes" class="btn btn-success btn-lg mx-2">Ha</button>
+                            <a href="{% url 'profile' %}" class="btn btn-danger btn-lg mx-2">Yo‘q</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

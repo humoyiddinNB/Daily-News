@@ -11,6 +11,7 @@ from django.views import View
 from django.views.generic import ListView
 
 
+
 def get_date():
     return datetime.datetime.today()
 

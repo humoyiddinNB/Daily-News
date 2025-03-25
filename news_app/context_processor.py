@@ -1,3 +1,4 @@
+from users.models import Comment
 from .models import News, Category
 from django.shortcuts import get_object_or_404
 
@@ -16,3 +17,7 @@ def popular_posts(request):
     popular_posts = News.objects.all().order_by("-views")[:4]
     return {"popular_posts" : popular_posts}
 
+
+def all_comments(request):
+    comments = Comment.objects.select_related('user', 'post').order_by('-id')[:5]
+    return {'comments': comments}

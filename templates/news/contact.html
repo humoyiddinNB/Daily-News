@@ -23,7 +23,7 @@
       <div class="col-lg-4 col-md-4 col-sm-4">
         <aside class="right_content">
           <div class="single_sidebar">
-            <h2><span>Ommabop Habarlar</span></h2>
+            <h2><span>Mahsxur Postlar</span></h2>
             <ul class="spost_nav">
               {% for news in popular_posts %}
               <li>
@@ -31,8 +31,74 @@
                   <div class="media-body"> <a href="{% url 'details' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>
-              {% endfor %}
+               {% endfor %}
             </ul>
+            <div class="single_sidebar">
+            <br>
+            <br>
+            <br>
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Turkumlar</a></li>
+              <li role="presentation"><a href="#video" aria-controls="profile" role="tab" data-toggle="tab">Videolar</a></li>
+              <li role="presentation"><a href="#comments" aria-controls="messages" role="tab" data-toggle="tab">Sharxlar</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="category">
+                {% for ctg in categories %}
+                <ul>
+                  <li class="cat-item"><a href="{% url 'category' ctg.name %} ">{{ ctg.name }}</a></li>
+                </ul>
+                {% endfor %}
+              </div>
+              <div role="tabpanel" class="tab-pane" id="video">
+                <div class="video_area">
+                    <iframe width="100%" height="315"
+                        src="https://www.youtube.com/embed/qtFiwEkQNjM?si=H5z-OhGlXZSHGx2A"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="comments">
+                  <ul class="spost_nav">
+                      {% for comment in comments %}
+                      <li class="mb-3">
+                          <div class="media wow fadeInDown">
+                              <div class="media-body">
+                                  <h5 class="media-heading">
+                                      <small class="text-muted"> <a href="{% url 'details' comment.post.slug %}"> {{ comment.post.title|truncatewords:3 }}  </a></small>
+                                      <strong> ga  {{ comment.user.username }}</strong>
+                                      <p> sharx qoldirdi: </p>
+                                  </h5>
+                                  <p class="mt-1">{{ comment.content }}</p>
+                              </div>
+                          </div>
+                      </li>
+                      {% empty %}
+                      <li>
+                          <div class="media-body">
+                              <p class="text-muted">Sharxlar mavjud emas.</p>
+                          </div>
+                      </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              <div class="single_sidebar wow fadeInDown">
+              <br>
+              <br>
+              <br>
+              <h2><span>Barcha turkumlar</span></h2>
+                  <select class="catgArchive" onchange="if (this.value) window.location.href=this.value;">
+                      <option value="">Turkumlarni tanlang</option>
+                          {% for category in categories %}
+                              <option value="{% url 'category' category.name %}">{{ category.name }}</option>
+                          {% endfor %}
+                  </select>
+              </div>
+
+            </div>
+          </div>
           </div>
         </aside>
       </div>

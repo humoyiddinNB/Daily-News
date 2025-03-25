@@ -18,10 +18,44 @@
 
 </head>
 <body>
-<div id="preloader">
-  <div id="status">&nbsp;</div>
+<div id="preloader" style="
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: white;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+">
+    <div style="
+        width: 50px;
+        height: 50px;
+        border: 5px solid #ccc;
+        border-top-color: #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    "></div>
+    <div id="status" style="
+        margin-top: 40px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    ">&nbsp;SABR QILING 😊 </div>
 </div>
-<a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<a class="scrollToTop" href="{% url 'homepage' %}"><i class="fa fa-angle-up"></i></a>
 <div class="container">
   <header id="header">
     <div class="row">
@@ -31,14 +65,12 @@
             <ul class="top_nav">
               {% if user.is_authenticated %}
               <li><a href="{% url 'homepage' %}">Bosh sahifa</a></li>
-              <li><a href="#">Biz haqimizda</a></li>
               <li><a href="{% url 'contact' %}">Bog'lanish</a></li>
               <li><a href="{% url 'profile' %}">Profil</a></li>
               <li><a href="{% url 'update' %}">Profilni yangilash</a></li>
               <li><a href="{% url 'logout' %}">Profildan chiqish</a></li>
               {% else %}
               <li><a href="{% url 'homepage' %}">Bosh sahifa</a></li>
-              <li><a href="#">Biz haqimizda</a></li>
               <li><a href="{% url 'contact' %}">Bog'lanish</a></li>
               <li><a href="{% url 'register' %}">Ro'yxatdan o'tish</a></li>
               <li><a href="{% url 'login' %}">Kirish</a></li>
@@ -52,7 +84,7 @@
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="header_bottom">
-          <div class="logo_area"><a href="" class="logo"><img src="{% static 'images/logo.jpg' %}" alt=""></a></div>
+          <div class="logo_area"><a href="" class="logo"><img src="{% static 'images/download.png' %}" alt=""></a></div>
           <div class="add_banner"><a href="#"><img src="{% static 'images/addbanner_728x90_V1.jpg' %}" alt=""></a></div>
         </div>
       </div>
@@ -81,7 +113,7 @@
         <div class="latest_newsarea"> <span>So'ngi yangiliklar</span>
           <ul id="ticker01" class="news_sticker">
           {% for news in latest_news %}
-            <li><a href="{% url 'details' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
+            <li><a href="https://cbu.uz/ru/arkhiv-kursov-valyut/json/">{{ cur.title }}</a></li>
           {% endfor %}
           </ul>
           <div class="social_area">
@@ -94,7 +126,6 @@
               <li class="vimeo"><a href="https://www.vimeo.com" target="_blank"></a></li>
               <li class="youtube"><a href="https://www.youtube.com" target="_blank"></a></li>
               <li class="mail"><a href="mailto:your-email@example.com"></a></li>
-
             </ul>
           </div>
         </div>

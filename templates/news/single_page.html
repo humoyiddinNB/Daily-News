@@ -68,37 +68,7 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
             $(document).ready(function(){
-                // **Izoh qo'shish**
-                $("#commentForm").submit(function(e){
-                    e.preventDefault();
-                    var content = $("#commentContent").val();
-                    $.ajax({
-                        url: "{% url 'comment_add' news.slug %}",
-                        type: "POST",
-                        data: {
-                            content: content,
-                            csrfmiddlewaretoken: "{{ csrf_token }}"
-                        },
-                        success: function(response){
-                            if(response.success){
-                                $(".comments-section").append(`
-                                    <div class="comment" id="comment-${response.comment_id}">
-                                        <div class="comment-header">
-                                            <strong>{{ user.username }}</strong>
-                                            <small>Hozirgina</small>
-                                        </div>
-                                        <p class="comment-text" id="comment-text-${response.comment_id}">${content}</p>
-                                        <div class="comment-actions">
-                                            <a href="#" class="edit-comment" data-id="${response.comment_id}">Tahrirlash</a>
-                                            <a href="#" class="delete-comment" data-id="${response.comment_id}" onclick="return confirm('Haqiqatan ham o‘chirmoqchimisiz?')">O‘chirish</a>
-                                        </div>
-                                    </div>
-                                `);
-                                $("#commentContent").val("");
-                            }
-                        }
-                    });
-                });
+
 
                 // **Tahrirlash**
                 $(".edit-comment").click(function(e){
@@ -153,19 +123,6 @@
             </script>
 
 
-            {% if user.is_authenticated %}
-            <div class="comment-form">
-                <h4>Izoh qoldirish:</h4>
-                <form id="commentForm" method="post">
-                    {% csrf_token %}
-                    <textarea name="content" required placeholder="Fikringizni yozing..."></textarea>
-                    <button type="submit">Yuborish</button>
-                </form>
-            </div>
-            {% else %}
-            <p>Izoh qoldirish uchun <a href="{% url 'login' %}">kirish</a> qiling.</p>
-            {% endif %}
-
             <div class="social_link">
               <ul class="sociallink_nav">
                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -201,10 +158,33 @@
           <h3>Street Hills</h3>
           <img src="../images/post_img1.jpg" alt=""/> </div>
         </a> </nav>
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="latest_post">
+            <h2><span>So'ngi yangiliklar</span></h2>
+            <div class="latest_post_container">
+              <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
+              <ul class="latest_postnav">
+
+                {% for news in news_list|slice:"4:9" %}
+                <li>
+                  <div class="media"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                    <div class="media-body"> <a href="pages/single_page.html" class="catg_title">{{ news.title }}</a> </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+              <div id="next-button"><i class="fa  fa-chevron-down"></i></div>
+            </div>
+          </div>
+        </div>
+
       <div class="col-lg-4 col-md-4 col-sm-4">
         <aside class="right_content">
+
           <div class="single_sidebar">
-            <h2><span>Mashxur POstlar</span></h2>
+            <h2><span>Ommabop Habarlar</span></h2>
             <ul class="spost_nav">
               {% for news in popular_posts %}
               <li>
@@ -215,72 +195,69 @@
                {% endfor %}
             </ul>
           </div>
+
           <div class="single_sidebar">
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Category</a></li>
-              <li role="presentation"><a href="#video" aria-controls="profile" role="tab" data-toggle="tab">Video</a></li>
-              <li role="presentation"><a href="#comments" aria-controls="messages" role="tab" data-toggle="tab">Comments</a></li>
+                <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Turkumlar</a></li>
+                <li role="presentation"><a href="#video" aria-controls="profile" role="tab" data-toggle="tab">Videolar</a></li>
+                <li role="presentation"><a href="#comments" aria-controls="messages" role="tab" data-toggle="tab">Sharxlar</a></li>
             </ul>
             <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="category">
-                {% for ctg in categories %}
-                <ul>
-                  <li class="cat-item"><a href="{% url 'category' ctg.name %} ">{{ ctg.name }}</a></li>
-                </ul>
-                {% endfor %}
-              </div>
-              <div role="tabpanel" class="tab-pane" id="video">
-                <div class="vide_area">
-                  <iframe width="100%" height="250" src="http://www.youtube.com/embed/h5QWbURNEpA?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+                <div role="tabpanel" class="tab-pane active" id="category">
+                    {% for ctg in categories %}
+                    <ul>
+                        <li class="cat-item"><a href="{% url 'category' ctg.name %}">{{ ctg.name }}</a></li>
+                    </ul>
+                    {% endfor %}
                 </div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="comments">
-                <ul class="spost_nav">
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img1.jpg"> </a>
-                      <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
+                <div role="tabpanel" class="tab-pane" id="video">
+                    <div class="video_area">
+                        <iframe width="100%" height="315"
+                            src="https://www.youtube.com/embed/qtFiwEkQNjM"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
                     </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img2.jpg"> </a>
-                      <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img1.jpg"> </a>
-                      <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img2.jpg"> </a>
-                      <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="comments">
+                    <ul class="spost_nav">
+                        {% for comment in comments %}
+                        <li class="mb-3">
+                            <div class="media wow fadeInDown">
+                                <div class="media-body">
+                                    <h5 class="media-heading">
+                                        <small class="text-muted">
+                                            <a href="{% url 'details' comment.post.slug %}">{{ comment.post.title|truncatewords:3 }}</a>
+                                        </small>
+                                        <strong>ga {{ comment.user.username }}</strong>
+                                        <p>sharx qoldirdi:</p>
+                                    </h5>
+                                    <p class="mt-1">{{ comment.content }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li>
+                            <div class="media-body">
+                                <p class="text-muted">Sharxlar mavjud emas.</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-          </div>
+        </div>
+
+
           <div class="single_sidebar wow fadeInDown">
-            <h2><span>Sponsor</span></h2>
-            <a class="sideAdd" href="#"><img src="../images/add_img.jpg" alt=""></a> </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Category Archive</span></h2>
-            <select class="catgArchive">
-              <option>Select Category</option>
-              <option>Life styles</option>
-              <option>Sports</option>
-              <option>Technology</option>
-              <option>Treads</option>
-            </select>
-          </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Links</span></h2>
-            <ul>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Rss Feed</a></li>
-              <li><a href="#">Login</a></li>
-              <li><a href="#">Life &amp; Style</a></li>
-            </ul>
+              <h2><span>Barcha turkumlar</span></h2>
+              <select class="catgArchive" onchange="if (this.value) window.location.href=this.value;">
+                  <option value="">Turkumlarni tanlang</option>
+                  {% for category in categories %}
+                      <option value="{% url 'category' category.name %}">{{ category.name }}</option>
+                  {% endfor %}
+              </select>
           </div>
         </aside>
       </div>
