@@ -4,7 +4,6 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
 
 # Backup files #
 *.bak
@@ -98,7 +97,6 @@ celerybeat-schedule.*
 *.sage.py
 
 # Environments
-.venv
 .venv
 env/
 venv/
