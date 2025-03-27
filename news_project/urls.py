@@ -30,3 +30,14 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
+def custom_502(request, exception=None):
+    response = render(request, 'news/502.html')
+    response.status_code = 502
+    return response
+
+
+handler404 = custom_502
