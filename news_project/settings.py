@@ -48,9 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'news_app',
     'users',
-
+    'corsheaders',
 ]
-
+#
 # MIDDLEWARE = [
 #     'django.middleware.security.SecurityMiddleware',
 #     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -63,11 +63,11 @@ INSTALLED_APPS = [
 # ]
 
 MIDDLEWARE = [
-    'main.middleware.Custom502Middleware',  # Custom 502 middleware
+    'main.middleware.Custom502Middleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Bu yerga qo'shish kerak
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,6 +76,8 @@ MIDDLEWARE = [
 ]
 
 
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 ROOT_URLCONF = 'news_project.urls'
